@@ -25,7 +25,7 @@ public class Main {
         System.out.println(inputString);
         System.out.println("READLINE");
         out.println("+PONG");
-        }
+      }
     } catch (IOException e){
       System.out.println("IOException: " + e.getMessage());
     }
