@@ -5,6 +5,33 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+class ClientHandler extends Thread {
+    final Socket socket;
+    final BufferedReader inputStream;
+    final PrintWriter outputStream;
+
+    public ClientHandler(Socket socket, BufferedReader inputStream, PrintWriter outputStream) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
+        this.socket = socket;
+    }
+
+    @Override
+    public void start() {
+        while (true) {
+            String inputString = null;
+            try {
+                inputString = inputStream.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(inputString);
+            System.out.println("READLINE");
+            outputStream.println("+PONG");
+        }
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
         // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -16,15 +43,14 @@ public class Main {
         try {
             serverSocket = new ServerSocket(port);
             serverSocket.setReuseAddress(true);
-            // Wait for connection from client.
-            clientSocket = serverSocket.accept();
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             while (true) {
-                String inputString = in.readLine();
-                System.out.println(inputString);
-                System.out.println("READLINE");
-                out.println("+PONG");
+                // Wait for connection from client.
+                clientSocket = serverSocket.accept();
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                Thread thread = new ClientHandler(clientSocket, in, out);
+
+                thread.start();
             }
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
