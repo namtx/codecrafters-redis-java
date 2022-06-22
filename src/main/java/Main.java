@@ -20,7 +20,8 @@ public class Main {
       clientSocket = serverSocket.accept();
       PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
       BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-      in.readLine();
+      String inputString = in.readLine();
+      System.out.println(inputString);
       System.out.println("READLINE");
       out.print("+PONG\r\n");
     } catch (IOException e) {
