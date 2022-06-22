@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-class ClientHandler extends Thread {
+class ClientHandler implements Runnable {
     final Socket socket;
     final BufferedReader inputStream;
     final PrintWriter outputStream;
@@ -17,7 +17,7 @@ class ClientHandler extends Thread {
     }
 
     @Override
-    public void start() {
+    public void run() {
         while (true) {
             String inputString = null;
             try {
@@ -48,7 +48,7 @@ public class Main {
                 clientSocket = serverSocket.accept();
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                Thread thread = new ClientHandler(clientSocket, in, out);
+                Thread thread = new Thread(new ClientHandler(clientSocket, in, out));
 
                 thread.start();
             }
