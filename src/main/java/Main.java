@@ -23,7 +23,7 @@ public class Main {
       String inputString = in.readLine();
       System.out.println(inputString);
       System.out.println("READLINE");
-      out.println("+PONG\r\n");
+      out.println("+PONG");
     } catch (IOException e) {
       System.out.println("IOException: " + e.getMessage());
     }
