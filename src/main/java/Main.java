@@ -17,14 +17,16 @@ public class Main {
       serverSocket = new ServerSocket(port);
       serverSocket.setReuseAddress(true);
       // Wait for connection from client.
-      clientSocket = serverSocket.accept();
-      PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-      BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-      String inputString = in.readLine();
-      System.out.println(inputString);
-      System.out.println("READLINE");
-      out.println("+PONG");
-    } catch (IOException e) {
+      while(true) {
+        clientSocket = serverSocket.accept();
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String inputString = in.readLine();
+        System.out.println(inputString);
+        System.out.println("READLINE");
+        out.println("+PONG");
+        }
+    } catch (IOException e){
       System.out.println("IOException: " + e.getMessage());
     }
   }
